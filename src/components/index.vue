@@ -132,26 +132,13 @@
                     <div class="left-705">
                         <div class="banner-img">
                             <div id="focus-box" class="focus-box">
-                                <ul class="slides">
-                                    <li class="" style="width: 100%;height:100%; float: left; margin-right: -100%; position: relative; opacity: 0; display: block; z-index: 1;">
-                                        <a href="/goods.html">
-                                            <img style="width: 100%;height:100%;" src="http://39.108.135.214:8899/imgs/SJ4EgwosX0wTqvyAvhtFGT1w.jpg" draggable="false">
+                               <el-carousel height="341px">
+                                    <el-carousel-item v-for="item in sliderlist" :key="item.id">
+                                        <a href="#">
+                                            <img style="display:block;height:100%" :src="item.img_url" alt="">
                                         </a>
-                                    </li>
-                                    <li style="width: 100%;height:100%; float: left; margin-right: -100%; position: relative; opacity: 1; display: block; z-index: 2;" class="flex-active-slide">
-                                        <a href="/goods.html">
-                                            <img style="width: 100%;height:100%;" src="http://39.108.135.214:8899/upload/201504/20/thumb_201504200314272543.jpg" draggable="false">
-                                        </a>
-                                    </li>
-                                </ul>
-                                <ol class="flex-control-nav flex-control-paging">
-                                    <li>
-                                        <a class="">1</a>
-                                    </li>
-                                    <li>
-                                        <a class="flex-active">2</a>
-                                    </li>
-                                </ol>
+                                    </el-carousel-item>
+                                </el-carousel>
                             </div>
 
                         </div>
@@ -159,44 +146,14 @@
                     <!--/幻灯片-->
                     <div class="left-220">
                         <ul class="side-img-list">
-                            <li>
+                            <li v-for="(item, index) in toplist" :key="item.id">
                                 <div class="img-box">
-                                    <label>1</label>
-                                    <img src="http://39.108.135.214:8899/imgs/SJ4EgwosX0wTqvyAvhtFGT1w.jpg">
+                                    <label>{{index+1}}</label>
+                                    <img :src="item.img_url">
                                 </div>
                                 <div class="txt-box">
-                                    <a href="/goods/show-98.html">骆驼男装2017秋季新款运动休闲纯色夹克青年宽松长袖针织开衫卫衣</a>
-                                    <span>2017-09-26</span>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="img-box">
-                                    <label>2</label>
-                                    <img src="http://39.108.135.214:8899/upload/201504/20/thumb_201504200314272543.jpg">
-                                </div>
-                                <div class="txt-box">
-                                    <a href="/goods/show-98.html">奔腾（BNTN） 380功放+纽约至尊 套装家庭影院</a>
-                                    <span>2015-04-20</span>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="img-box">
-                                    <label>3</label>
-                                    <img src="http://39.108.135.214:8899/upload/201504/20/thumb_201504200318534459.jpg">
-                                </div>
-                                <div class="txt-box">
-                                    <a href="/goods/show-98.html">飞利浦（PHILIPS）DVP3690 全高清DVD影碟机播放器</a>
-                                    <span>2015-04-20</span>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="img-box">
-                                    <label>4</label>
-                                    <img src="http://39.108.135.214:8899/upload/201504/20/thumb_201504200258403759.jpg">
-                                </div>
-                                <div class="txt-box">
-                                    <a href="/goods/show-98.html">三星（SAMSUNG）UA40HU5920JXXZ 40英寸4K超高清</a>
-                                    <span>2015-04-20</span>
+                                    <a href="/goods/show-98.html">{{item.title}}</a>
+                                    <span>{{item.add_time | beautyTime }}</span>
                                 </div>
                             </li>
                         </ul>
@@ -587,13 +544,38 @@
 </template>
 
 <script>
+//引入axios
+import axios from "axios";
+//引入moment
+import moment from "moment";
 export default {
-    name:'index'
-}
+  name: "index",
+  data: function() {
+    return {
+      catelist: [],
+      sliderlist: [],
+      toplist: []
+    };
+  },
+  created() {
+    axios
+      .get("http://111.230.232.110:8899/site/goods/gettopdata/goods")
+      .then(response => {
+        //console.log(response);
+        this.catelist = response.data.message.catelist;
+        this.sliderlist = response.data.message.sliderlist;
+        this.toplist = response.data.message.toplist;
+      });
+  },
+  filters: {
+    beautyTime: function(value) {
+      return moment(value).format("YYYY年MM月DD日");
+    }
+  }
+};
 </script>
 
 <style>
-
 </style>
 
 
