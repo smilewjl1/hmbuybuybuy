@@ -54,7 +54,7 @@
                                         <dd>
                                             <div id="buyButton" class="btn-buy">
                                                 <button onclick="cartAdd(this,'/',1,'/shopping.html');" class="buy">立即购买</button>
-                                                <button onclick="cartAdd(this,'/',0,'/cart.html');" class="add">加入购物车</button>
+                                                <button @click="addCart" class="add">加入购物车</button>
                                             </div>
                                         </dd>
                                     </dl>
@@ -62,6 +62,7 @@
                             </div>
                         </div>
                         <div id="goodsTabs" class="goods-tab bg-wrap">
+                            <Affix>
                             <div id="tabHead" class="tab-head" style="position: static; top: 517px; width: 925px;">
                                 <ul>
                                     <li>
@@ -72,8 +73,8 @@
                                     </li>
                                 </ul>
                             </div>
-                            <div class="tab-content entry" style="display: block;" v-show="selectIndex==0" v-html="goodsinfo.content">
-                               
+                             </Affix>
+                            <div class="tab-content entry" style="display: block;" v-show="selectIndex==0" v-html="goodsinfo.content">     
                             </div>
                             <div class="tab-content" style="display: block;" v-show="selectIndex==1">
                                 <div class="comment-box">
@@ -102,7 +103,7 @@
                                             <div class="inner-box">
                                                 <div class="info">
                                                     <span>{{item.user_name}}</span>
-                                                    <span>{{item.add_time | beautyTime}}</span>
+                                                    <span>{{item.add_time | beautyTimePro('YYYY/MM/DD HH:mm:ss')}}</span>
                                                 </div>
                                                 <p>{{item.content}}</p>
                                             </div>
@@ -170,10 +171,10 @@ export default {
       // 评论内容
       comments: [],
       //用户评论内容
-      message:'',
+      message: "",
       //图片放大镜
       images: {
-          normal_size: [
+        normal_size: [
           {
             id: 1,
             url:
@@ -188,10 +189,10 @@ export default {
       },
       zoomerOptions: {
         zoomFactor: 4,
-        pane: 'container-round',
+        pane: "container-round",
         hoverDelay: 300,
-        namespace: 'inline-zoomer',
-        move_by_click:true,
+        namespace: "inline-zoomer",
+        move_by_click: true,
         scroll_items: 5,
         choosed_thumb_border_color: "#bbdefb"
       }
@@ -230,7 +231,7 @@ export default {
           }&pageSize=${this.pageSize}`
         )
         .then(response => {
-           // console.log(response);  
+          // console.log(response);
           this.totalcount = response.data.totalcount;
           this.pageIndex = response.data.pageIndex;
           this.pageSize = response.data.pageSize;
@@ -243,16 +244,16 @@ export default {
       // 重新发请求
       this.getComments();
     },
-    pageSizeChange(pageSize){
-        this.pageSize = pageSize;
-        //console.log(pageSize);
-        this.pageIndex = 1;
-        this.getComments();
+    pageSizeChange(pageSize) {
+      this.pageSize = pageSize;
+      //console.log(pageSize);
+      this.pageIndex = 1;
+      this.getComments();
     },
     addCommitComment() {
-      if(this.message == ''){
-          this.$Message.warning('评论内容不能为空');
-          return;
+      if (this.message == "") {
+        this.$Message.warning("评论内容不能为空");
+        return;
       }
       this.$axios
         .post("site/validate/comment/post/goods/" + this.goodId, {
@@ -262,9 +263,15 @@ export default {
           //console.log(response);
           this.pageIndex = 1;
           this.getComments();
-          this.message = '';
-          this.$Message.success('评论内容发表成功');
-        })
+          this.message = "";
+          this.$Message.success("评论内容发表成功");
+        });
+    },
+    addCart() {
+      this.$store.commit("addCart", {
+        id: this.goodId,
+        buyCount: this.buyNum
+      });
     }
   },
   created() {
@@ -296,8 +303,8 @@ export default {
   /* 变块 */
   display: block;
 }
-.pic-box{
-    width:390px;
+.pic-box {
+  width: 390px;
 }
 </style>
 

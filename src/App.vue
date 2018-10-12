@@ -22,11 +22,14 @@
                         <a>退出</a>
                         <strong>|</strong>
                     </span>
-                    <a href="" class="">
+                    <router-link to="/cart">
+                    <!-- <a href="" class=""> -->
                         <i class="iconfont icon-cart"></i>购物车(
                         <span id="shoppingCartCount">
-                            <span>4</span>
-                        </span>)</a>
+                            <span>{{$store.getters.cartGoodCount}}</span>
+                        </span>) 
+                    <!-- </a> -->
+                    </router-link>
                 </div>
             </div>
         </div>
@@ -113,12 +116,15 @@
                     </div>
                 </div>
             </div>
+    <BackTop :height="100" :bottom="50">
+        <div class="top">返回顶端</div>
+    </BackTop>
   </div>
 </template>
 
 <script>
 //引入jquery
-import $ from 'jquery';
+import $ from "jquery";
 
 export default {
   name: "app",
@@ -147,12 +153,20 @@ export default {
       }
     );
   },
+  methods: {}
 };
 </script>
 
 <style>
 @import url("./assets/statics/site/css/style.css");
 .menuhd ul li a span.over {
-    background-color: yellow;
+  background-color: yellow;
 }
+.top{
+        padding: 10px;
+        background: rgba(0, 153, 229, .7);
+        color: #fff;
+        text-align: center;
+        border-radius: 2px;
+    }
 </style>
