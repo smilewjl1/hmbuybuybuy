@@ -1,17 +1,7 @@
 import Vue from 'vue'
 import App from './App.vue'
-
-//引入路由插件
-import VueRouter from 'vue-router'
-//use一下
-Vue.use(VueRouter)
-
-import index from './components/index.vue';
-//引入detail组件
-import detail from './components/detail.vue';
-//引入购物车组件
-import cart from './components/cart.vue';
-
+import router from './route';
+import store from './store';
 //引入element-ui框架
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
@@ -44,59 +34,7 @@ Vue.use(ProductZoomer)
 //引入moment
 import moment from "moment";
 
-//引入vuex来管理数据
-import Vuex from 'vuex'
-Vue.use(Vuex)
-
-const store = new Vuex.Store({
-  state: {
-    shopCartData:JSON.parse(window.localStorage.getItem('cartData')) || {}
-  },
-  mutations: {
-    addCart(state,opt){
-      if(state.shopCartData[opt.id] == undefined){
-        Vue.set(state.shopCartData,opt.id,opt.buyCount);
-      }else{
-        state.shopCartData[opt.id] += opt.buyCount;
-      }
-    }
-  },
-  getters: {
-    cartGoodCount(state) {
-      let totalCount = 0;
-      for (const key in state.shopCartData) {
-          totalCount += state.shopCartData[key];
-      }
-      return totalCount;
-    }
-  }
-})
-
 Vue.config.productionTip = false
-
-const routes = [
-  {
-    path:'/',
-    component:index
-  },
-  {
-    path:'/index',
-    component:index
-  },
-  {
-    path:'/detail/:goodId',
-    component:detail
-  },
-  {
-    path:'/cart',
-    component:cart
-  },
-];
-
-//实例化路由
-const router = new VueRouter({
-  routes
-});
 
 //抽取全局过滤器
 Vue.filter('beautyTime', function (value) {

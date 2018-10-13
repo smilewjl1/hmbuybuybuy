@@ -63,7 +63,12 @@
                                             <div class="info">
                                                 <strong>购物车没有商品！</strong>
                                                 <p>您的购物车为空，
-                                                    <a href="/index.html">马上去购物</a>吧！</p>
+                                                    <router-link to="./index">
+                                                    <!-- <a href="/index.html"> -->
+                                                    马上去购物吧！
+                                                    <!-- </a> -->
+                                                    </router-link>
+                                                </p>
                                             </div>
                                         </div>
                                     </td>
@@ -96,7 +101,19 @@
 
 <script>
 export default {
-    name:"cart"
+    name:"cart",
+    data:function(){
+        return{
+
+        }
+    },
+    methods:{
+        
+    },
+    created() {
+        //console.log(this.$store.state.shopCartData);
+
+    },
 };
 </script>
 
