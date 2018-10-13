@@ -3,12 +3,15 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 //use一下
 Vue.use(VueRouter)
+
 //引入index组件
 import index from '@/components/index.vue';
 //引入detail组件
 import detail from '@/components/detail.vue';
 //引入购物车组件
 import cart from '@/components/cart.vue';
+//引入注册组件
+import login from '@/components/login';
 
 export default new VueRouter({
     routes : [{
@@ -27,5 +30,9 @@ export default new VueRouter({
             path: '/cart',
             component: cart
         },
+        {
+            path:'/login',
+            component:login
+        }
     ]
 })

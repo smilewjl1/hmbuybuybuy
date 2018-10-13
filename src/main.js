@@ -1,15 +1,18 @@
 import Vue from 'vue'
 import App from './App.vue'
-import router from './route';
-import store from './store';
+import router from './route'
+import store from './store'
+
+//引入carvos动画
+import './assets/js/cavars.js'
 //引入element-ui框架
-import ElementUI from 'element-ui';
-import 'element-ui/lib/theme-chalk/index.css';
+import ElementUI from 'element-ui'
+import 'element-ui/lib/theme-chalk/index.css'
 Vue.use(ElementUI)
 
 //引入iview框架
-import iView from 'iview';
-import 'iview/dist/styles/iview.css';
+import iView from 'iview'
+import 'iview/dist/styles/iview.css'
 Vue.use(iView);
 
 //引入懒加载
@@ -20,19 +23,19 @@ Vue.use(VueLazyload, {
 })
 
 //引入axios
-import axios from "axios";
+import axios from "axios"
 //抽取基地址
-axios.defaults.baseURL = 'http://111.230.232.110:8899';
+axios.defaults.baseURL = 'http://111.230.232.110:8899'
 
 //将其加到vue原型中
-Vue.prototype.$axios = axios;
+Vue.prototype.$axios = axios
 
 //引入放大镜插件
 import ProductZoomer from 'vue-product-zoomer'
 Vue.use(ProductZoomer)
 
 //引入moment
-import moment from "moment";
+import moment from "moment"
 
 Vue.config.productionTip = false
 
