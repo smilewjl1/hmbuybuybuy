@@ -1,6 +1,6 @@
 <template>
-<div>
-  <div class="section">
+    <div>
+        <div class="section">
             <div class="location">
                 <span>当前位置：</span>
                 <a href="/index.html">首页</a> &gt;
@@ -54,7 +54,7 @@
                                     <th width="104" align="left">金额(元)</th>
                                     <th width="54" align="center">操作</th>
                                 </tr>
-                                <tr>
+                                <tr v-show="goodslist.length == 0">
                                     <td colspan="10">
                                         <div class="msg-tips">
                                             <div class="icon warning">
@@ -64,13 +64,34 @@
                                                 <strong>购物车没有商品！</strong>
                                                 <p>您的购物车为空，
                                                     <router-link to="./index">
-                                                    <!-- <a href="/index.html"> -->
-                                                    马上去购物吧！
-                                                    <!-- </a> -->
+                                                        <!-- <a href="/index.html"> -->
+                                                        马上去购物吧！
+                                                        <!-- </a> -->
                                                     </router-link>
                                                 </p>
                                             </div>
                                         </div>
+                                    </td>
+                                </tr>
+                                <tr v-show="goodslist.length != 0" v-for="item in goodslist" :key="item.id">
+                                    <td>
+                                        <el-switch v-model="item.selected" active-color="#13ce66" inactive-color="#ff4949">
+                                        </el-switch>
+                                    </td>
+                                    <td>
+                                        <img :src="item.img_url" alt="" style="width: 65px;">
+                                    </td>
+                                    <td> {{item.title}}
+                                    </td>
+                                    <td>{{item.sell_price}}</td>
+                                    <td>
+                                        <el-input-number v-model="item.buycount" @change="countChange(item.id,$event)" :min="1" :max="10" label="描述文字"></el-input-number>
+                                    </td>
+                                    <td>{{item.buycount*item.sell_price}}</td>
+                                    <td>
+                                        <button type="button" class="el-button el-button--danger is-circle">
+                                            <i class="el-icon-delete"></i>
+                                        </button>
                                     </td>
                                 </tr>
                                 <tr>
@@ -96,24 +117,56 @@
                 </div>
             </div>
         </div>
-</div>
+    </div>
 </template>
 
 <script>
 export default {
-    name:"cart",
-    data:function(){
-        return{
-
-        }
-    },
-    methods:{
-        
-    },
-    created() {
-        //console.log(this.$store.state.shopCartData);
-
-    },
+  name: "cart",
+  data: function() {
+    return {
+      goodslist: []
+    };
+  },
+  methods: {
+    countChange(id,newCount) {
+        this.$store.commit("updateCart",{
+            id,
+            newCount
+        })
+    }
+  },
+  created() {
+    //console.log(this.$store.state.shopCartData);
+    let ids = "";
+    for (const key in this.$store.state.shopCartData) {
+      ids += key;
+      ids += ",";
+    }
+    //console.log(ids);
+    //去掉最后一个','号
+    ids = ids.slice(0, -1);
+    this.$axios.get(`site/comment/getshopcargoods/${ids}`).then(response => {
+      //console.log(response);
+      response.data.message.forEach(v => {
+        v.buycount = this.$store.state.shopCartData[v.id];
+        v.selected = true;
+      });
+    //方法2进行赋值
+     // this.goodList = response.data.message;
+     // response.data.message.forEach(v => {
+     //   // 当前这个商品的购买数量  = Vuex中的购买数量
+     //   v.buycount = this.$store.state.shopCartData[v.id];
+     //   // 修改选中的状态
+     //   //   v.selected = true;
+     //   // 参数1 对象 参数2 新属性名 参数3 属性值
+     //   // 组件中 使用 $set 访问 Vue.set即可
+     //   this.$set(v,'selected',true);
+     // });
+      this.goodslist = response.data.message;
+      
+    });
+  }
 };
 </script>
 

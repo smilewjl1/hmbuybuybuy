@@ -14,6 +14,9 @@ export default new Vuex.Store({
       }else{
         state.shopCartData[opt.id] += opt.buyCount;
       }
+    },
+    updateCart(state,opt){
+      state.shopCartData[opt.id] = opt.newCount;
     }
   },
   getters: {
