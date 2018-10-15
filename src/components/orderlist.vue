@@ -3,8 +3,8 @@
         <div class="section">
             <div class="location">
                 <span>当前位置：</span>
-                <a href="/index.html">首页</a> &gt;
-                <a href="/cart.html">购物车</a>
+                <a @click="$router.push('/index')">首页</a> &gt;
+                <a @click="$router.push('/cart')">购物车</a>
             </div>
         </div>
 
@@ -229,7 +229,7 @@
                                         <label id="totalAmount" class="price">2299.00</label>
                                     </p>
                                     <p class="btn-box">
-                                        <a class="btn button" href="/cart.html">返回购物车</a>
+                                        <a class="btn button" @click="$router.push('/cart')" href="javascript:void(0)">返回购物车</a>
                                         <a id="btnSubmit" class="btn submit">确认提交</a>
                                     </p>
                                 </div>
@@ -245,16 +245,7 @@
 <script>
 export default {
     name:'orderlist',
-    beforeCreate() {
-        this.$axios.get('site/account/islogin').then(response => {
-            //console.log(response);
-            if(response.data.code === 'nologin'){
-                //this.$router.push({path:'login'})
-            }else{
-
-            }
-        });
-    },
+    
 };
 </script>
 

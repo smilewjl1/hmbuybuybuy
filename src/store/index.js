@@ -5,7 +5,8 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    shopCartData:JSON.parse(window.localStorage.getItem('cartData')) || {}
+    shopCartData:JSON.parse(window.localStorage.getItem('cartData')) || {},
+    isLogin:false
   },
   mutations: {
     addCart(state,opt){
@@ -20,6 +21,9 @@ export default new Vuex.Store({
     },
     deleteCart(state,id){
       Vue.delete(state.shopCartData,id);
+    },
+    updateLoginState(state,loginState){
+        state.isLogin = loginState;
     }
   },
   getters: {

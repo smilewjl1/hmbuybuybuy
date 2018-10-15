@@ -1,6 +1,6 @@
 <template>
-<div>
-  <div class="section">
+    <div>
+        <div class="section">
             <div class="location">
                 <span>当前位置：</span>
                 <a href="/index.html">首页</a> &gt;
@@ -18,30 +18,59 @@
 
                     <div id="loginform" name="loginform" class="login-box">
                         <div class="input-box">
-                            <input id="txtUserName" name="txtUserName" type="text" placeholder="用户名/手机/邮箱" maxlength="50">
+                            <input id="txtUserName" v-model.trim="username" name="txtUserName" type="text" placeholder="用户名/手机/邮箱" maxlength="50">
                         </div>
                         <div class="input-box">
-                            <input id="txtPassword" name="txtPassword" type="password" placeholder="输入登录密码" maxlength="16">
+                            <input id="txtPassword" v-model.trim="password" name="txtPassword" type="password" placeholder="输入登录密码" maxlength="16">
                         </div>
                         <div class="btn-box">
-                            <input id="btnSubmit" name="btnSubmit" type="submit" value="立即登录">
+                            <input id="btnSubmit" name="btnSubmit" @click="login" type="submit" value="立即登录">
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-</div>
+    </div>
 </template>
 
 <script>
 export default {
-    name:'login'
+  name: "login",
+  data: function() {
+    return {
+      username: "",
+      password: ""
+    };
+  },
+  methods: {
+    login() {
+       this.$axios
+        .post("site/account/login", {
+          user_name: this.username,
+          password: this.password
+        })
+        .then(response => {    
+          if (response.data.status == 1) {
+            this.$Notice.warning({
+              title: "友情提示",
+              desc: response.data.message
+            });
+          } else {
+            this.$Notice.success({
+              title: "欢迎你",
+              desc: response.data.message
+            });
+            this.$store.commit('updateLoginState',true); 
 
-}
+            this.$router.back();
+          }
+        });
+    }
+  }
+};
 </script>
 
 <style>
-
 </style>
 
 

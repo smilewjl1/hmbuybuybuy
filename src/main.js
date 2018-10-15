@@ -25,6 +25,8 @@ Vue.use(VueLazyload, {
 
 //引入axios
 import axios from "axios"
+//让ajax携带cookie
+axios.defaults.withCredentials=true;
 //抽取基地址
 axios.defaults.baseURL = 'http://111.230.232.110:8899'
 
@@ -42,20 +44,48 @@ Vue.config.productionTip = false
 
 //抽取全局过滤器
 Vue.filter('beautyTime', function (value) {
-    return moment(value).format("YYYY年MM月DD日");
+  return moment(value).format("YYYY年MM月DD日");
 });
 //美化全局时间过滤器
-Vue.filter('beautyTimePro', function (value,timeStr) {
+Vue.filter('beautyTimePro', function (value, timeStr) {
   return moment(value).format(timeStr);
 });
+
+//路由守卫来判断是否登录
+router.beforeEach((to, from, next) => {
+  window.document.title = to.meta.zhName;
+  if (to.path == '/orderlist') {
+    axios.get('site/account/islogin').then(response => {
+      //console.log(response);
+      if (response.data.code === 'nologin') {
+        router.push({
+          path: 'login'
+        })
+      } else {
+        next();
+      }
+    });
+  } else {
+    next();
+  }
+})
 
 new Vue({
   render: h => h(App),
   router,
-  store
+  store,
+  created(){
+    axios.get('site/account/islogin').then(response => {
+      if (response.data.code === 'logined') {
+        store.commit('updateLoginState', true);
+      } else {
+        store.commit('updateLoginState', false);
+      }
+    })
+  }
 }).$mount('#app')
 
 // 浏览器关闭事件
-window.onbeforeunload = function(){
-  window.localStorage.setItem('cartData',JSON.stringify(store.state.shopCartData));
+window.onbeforeunload = function () {
+  window.localStorage.setItem('cartData', JSON.stringify(store.state.shopCartData));
 }
