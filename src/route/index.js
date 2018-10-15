@@ -15,6 +15,8 @@ const orderlist = () =>
     import('@/components/orderlist.vue');
 const login = () =>
     import('@/components/login.vue');
+const detailList = () =>
+    import('@/components/detailList.vue');
 
 //引入index组件
 //import index from '@/components/index.vue';
@@ -73,6 +75,14 @@ export default new VueRouter({
             component: login,
             meta: {
                 zhName: '登录'
+            }
+        },
+        {
+            path: '/detailList',
+            name: 'detailList',
+            component: detailList,
+            meta: {
+                zhName: '支付中心'
             }
         }
     ],

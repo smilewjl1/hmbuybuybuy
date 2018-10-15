@@ -230,7 +230,7 @@
                                     </p>
                                     <p class="btn-box">
                                         <a class="btn button" @click="$router.push('/cart')" href="javascript:void(0)">返回购物车</a>
-                                        <a id="btnSubmit" class="btn submit">确认提交</a>
+                                        <a id="btnSubmit" @click="$router.push('/detailList')" class="btn submit">确认提交</a>
                                     </p>
                                 </div>
                             </div>
