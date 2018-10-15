@@ -5,6 +5,7 @@ import store from './store'
 
 //引入carvos动画
 import './assets/js/cavars.js'
+
 //引入element-ui框架
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'

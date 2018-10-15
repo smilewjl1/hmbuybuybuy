@@ -85,11 +85,11 @@
                                     </td>
                                     <td>{{item.sell_price}}</td>
                                     <td>
-                                        <el-input-number v-model="item.buycount" @change="countChange(item.id,$event)" :min="1" :max="10" label="描述文字"></el-input-number>
+                                        <el-input-number @goodsCountChange="getChangeCount(item.id)" v-model="item.buycount" @change="countChange(item.id,$event)" :min="1" :max="10" label="描述文字"></el-input-number>
                                     </td>
                                     <td>{{item.buycount*item.sell_price}}</td>
                                     <td>
-                                        <button type="button" class="el-button el-button--danger is-circle">
+                                        <button type="button" @click="delOne(item.id)" class="el-button el-button--danger is-circle">
                                             <i class="el-icon-delete"></i>
                                         </button>
                                     </td>
@@ -97,9 +97,9 @@
                                 <tr>
                                     <th align="right" colspan="8">
                                         已选择商品
-                                        <b class="red" id="totalQuantity">0</b> 件 &nbsp;&nbsp;&nbsp; 商品总金额（不含运费）：
+                                        <b class="red" id="totalQuantity">{{getTotalCount}}</b> 件 &nbsp;&nbsp;&nbsp; 商品总金额（不含运费）：
                                         <span class="red">￥</span>
-                                        <b class="red" id="totalAmount">0</b>元
+                                        <b class="red" id="totalAmount">{{getTotalPrice}}</b>元
                                     </th>
                                 </tr>
                             </tbody>
@@ -109,8 +109,8 @@
                     <!--购物车底部-->
                     <div class="cart-foot clearfix">
                         <div class="right-box">
-                            <button class="button" onclick="javascript:location.href='/index.html';">继续购物</button>
-                            <button class="submit" onclick="formSubmit(this, '/', '/shopping.html');">立即结算</button>
+                            <button class="button" @click="$router.push({ path: 'index' })">继续购物</button>
+                            <button class="submit" @click="$router.push({ path:'orderlist'})">立即结算</button>
                         </div>
                     </div>
                     <!--购物车底部-->
@@ -128,14 +128,6 @@ export default {
       goodslist: []
     };
   },
-  methods: {
-    countChange(id,newCount) {
-        this.$store.commit("updateCart",{
-            id,
-            newCount
-        })
-    }
-  },
   created() {
     //console.log(this.$store.state.shopCartData);
     let ids = "";
@@ -152,20 +144,78 @@ export default {
         v.buycount = this.$store.state.shopCartData[v.id];
         v.selected = true;
       });
-    //方法2进行赋值
-     // this.goodList = response.data.message;
-     // response.data.message.forEach(v => {
-     //   // 当前这个商品的购买数量  = Vuex中的购买数量
-     //   v.buycount = this.$store.state.shopCartData[v.id];
-     //   // 修改选中的状态
-     //   //   v.selected = true;
-     //   // 参数1 对象 参数2 新属性名 参数3 属性值
-     //   // 组件中 使用 $set 访问 Vue.set即可
-     //   this.$set(v,'selected',true);
-     // });
+      //方法2进行赋值
+      // this.goodList = response.data.message;
+      // response.data.message.forEach(v => {
+      //   // 当前这个商品的购买数量  = Vuex中的购买数量
+      //   v.buycount = this.$store.state.shopCartData[v.id];
+      //   // 修改选中的状态
+      //   //   v.selected = true;
+      //   // 参数1 对象 参数2 新属性名 参数3 属性值
+      //   // 组件中 使用 $set 访问 Vue.set即可
+      //   this.$set(v,'selected',true);
+      // });
       this.goodslist = response.data.message;
-      
     });
+  },
+  methods: {
+      //修改商品数量事件
+    countChange(id, newCount) {
+      this.$store.commit("updateCart", {
+        id,
+        newCount
+      });
+    },
+    //删除商品事件
+    delOne(id) {
+      this.$confirm("确定要删除该商品吗?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      })
+        .then(() => {
+             //从vuex中删除
+            this.$store.commit("deleteCart",id);
+            //从数组中删除
+            this.goodslist.forEach((v,index) => {
+                if(v.id == id){
+                    this.goodslist.splice(index,1);
+                }
+            });
+          this.$message({
+            type: "success",
+            message: "删除成功!"
+          });
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "已取消删除"
+          });
+        });
+    }
+  },
+  computed: {
+      //计算商品总数事件
+    getTotalCount() {
+      let totalCount = 0;
+      this.goodslist.forEach(v => {
+        if (v.selected) {
+          totalCount += v.buycount;
+        }
+      });
+      return totalCount;
+    },
+    //计算总金额
+    getTotalPrice() {
+      let totalPrice = 0;
+      this.goodslist.forEach(v => {
+        if (v.selected) {
+          totalPrice += v.sell_price * v.buycount;
+        }
+      });
+      return totalPrice;
+    }
   }
 };
 </script>

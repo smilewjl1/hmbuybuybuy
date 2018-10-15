@@ -10,6 +10,8 @@ import index from '@/components/index.vue';
 import detail from '@/components/detail.vue';
 //引入购物车组件
 import cart from '@/components/cart.vue';
+//引入下订单组件
+import orderlist from '@/components/orderlist.vue';
 //引入注册组件
 import login from '@/components/login';
 
@@ -29,6 +31,10 @@ export default new VueRouter({
         {
             path: '/cart',
             component: cart
+        },
+        {
+            path:'/orderlist',
+            component:orderlist
         },
         {
             path:'/login',

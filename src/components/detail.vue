@@ -1,5 +1,5 @@
 <template>
-     <div>
+    <div>
         <div class="section">
             <div class="location">
                 <span>当前位置：</span>
@@ -14,7 +14,7 @@
                     <div class="left-925">
                         <div class="goods-box clearfix">
                             <div class="pic-box" v-if="images.normal_size.length!=0">
-                                <ProductZoomer :base-images="images" :base-zoomer-options="zoomerOptions"/>
+                                <ProductZoomer :base-images="images" :base-zoomer-options="zoomerOptions" />
                             </div>
                             <div class="goods-spec">
                                 <h1>{{goodsinfo.title}}</h1>
@@ -54,7 +54,7 @@
                                         <dd>
                                             <div id="buyButton" class="btn-buy">
                                                 <button onclick="cartAdd(this,'/',1,'/shopping.html');" class="buy">立即购买</button>
-                                                <button @click="addCart" class="add">加入购物车</button>
+                                                <button @click="addCart" ref="toCart" class="add">加入购物车</button>
                                             </div>
                                         </dd>
                                     </dl>
@@ -63,23 +63,22 @@
                         </div>
                         <div id="goodsTabs" class="goods-tab bg-wrap">
                             <Affix>
-                            <div id="tabHead" class="tab-head" style="position: static; top: 517px; width: 925px;">
-                                <ul>
-                                    <li>
-                                        <a @click="selectIndex=0" href="javascript:;" :class="{selected:selectIndex==0}">商品介绍</a>
-                                    </li>
-                                    <li>
-                                        <a @click="selectIndex=1" href="javascript:;" :class="{selected:selectIndex==1}">商品评论</a>
-                                    </li>
-                                </ul>
-                            </div>
-                             </Affix>
-                            <div class="tab-content entry" style="display: block;" v-show="selectIndex==0" v-html="goodsinfo.content">     
+                                <div id="tabHead" class="tab-head" style="position: static; top: 517px; width: 925px;">
+                                    <ul>
+                                        <li>
+                                            <a @click="selectIndex=0" href="javascript:;" :class="{selected:selectIndex==0}">商品介绍</a>
+                                        </li>
+                                        <li>
+                                            <a @click="selectIndex=1" href="javascript:;" :class="{selected:selectIndex==1}">商品评论</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </Affix>
+                            <div class="tab-content entry" style="display: block;" v-show="selectIndex==0" v-html="goodsinfo.content">
                             </div>
                             <div class="tab-content" style="display: block;" v-show="selectIndex==1">
                                 <div class="comment-box">
-                                    <div id="commentForm" name="commentForm"
-                                        class="form-box">
+                                    <div id="commentForm" name="commentForm" class="form-box">
                                         <div class="avatar-box">
                                             <i class="iconfont icon-user-full"></i>
                                         </div>
@@ -126,16 +125,16 @@
                                     <li v-for="item in hotgoodslist" :key="item.id">
                                         <div class="img-box">
                                             <router-link :to="'/detail/'+item.id">
-                                            <!-- <a href="#/site/goodsinfo/90" class=""> -->
+                                                <!-- <a href="#/site/goodsinfo/90" class=""> -->
                                                 <img :src="item.img_url">
-                                            <!-- </a> -->
+                                                <!-- </a> -->
                                             </router-link>
                                         </div>
                                         <div class="txt-box">
                                             <router-link :to="'/detail/'+item.id">
-                                            <!-- <a href="#/site/goodsinfo/90" class=""> -->
+                                                <!-- <a href="#/site/goodsinfo/90" class=""> -->
                                                 {{item.title}}
-                                            <!-- </a> -->
+                                                <!-- </a> -->
                                             </router-link>
                                             <span>{{item.add_time | beautyTime}}</span>
                                         </div>
@@ -147,10 +146,12 @@
                 </div>
             </div>
         </div>
+        <img class="fly-img" ref="flyImg" style="display:none" :src="imglist.length == 0? '': imglist[0].original_path" alt="">
     </div>
 </template>
 
 <script>
+import $ from 'jquery';
 export default {
   name: "Detail",
   data: function() {
@@ -195,7 +196,8 @@ export default {
         move_by_click: true,
         scroll_items: 5,
         choosed_thumb_border_color: "#bbdefb"
-      }
+      },
+      isFinish: true
     };
   },
   methods: {
@@ -268,10 +270,39 @@ export default {
         });
     },
     addCart() {
-      this.$store.commit("addCart", {
-        id: this.goodId,
-        buyCount: this.buyNum
-      });
+      if (this.isFinish == false) return;
+      this.isFinish = false;
+      $(this.$refs.toCart).addClass("disabled");
+      // 获取按钮的位置
+      let startPos = $(this.$refs.toCart).offset();
+      //获取父组件购物车的位置
+      let targetPos = $(this.$parent.$refs.cart).offset();
+      $(this.$refs.flyImg)
+        .stop()
+        .show()
+        .addClass("animate")
+        .css(startPos)
+        .animate(
+          {
+            left: targetPos.left,
+            top: targetPos.top
+          },
+          1000,
+          () => {
+            $(this.$refs.flyImg)
+              .hide()
+              .removeClass("animate");
+            // 调用Vuex中的数据修改方法 提交载荷
+            this.$store.commit("addCart", {
+              id: this.goodId,
+              buyCount: this.buyNum
+            });
+            // 设置标示变量为true即可
+            this.isFinish = true;
+            // 移除类名
+            $(this.$refs.toCart).removeClass("disabled");
+          }
+        );
     }
   },
   created() {
@@ -305,6 +336,20 @@ export default {
 }
 .pic-box {
   width: 390px;
+}
+.fly-img {
+  width: 60px;
+  height: 60px;
+  position: absolute;
+}
+.fly-img.animate {
+  transform: rotate(3600deg) scale(0.5);
+  opacity: 0;
+  transition: transform 1s, opacity 2s;
+}
+.goods-spec .spec-box .btn-buy .add.disabled {
+  background-color: gray;
+  cursor: not-allowed;
 }
 </style>
 

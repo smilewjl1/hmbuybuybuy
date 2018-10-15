@@ -17,6 +17,9 @@ export default new Vuex.Store({
     },
     updateCart(state,opt){
       state.shopCartData[opt.id] = opt.newCount;
+    },
+    deleteCart(state,id){
+      Vue.delete(state.shopCartData,id);
     }
   },
   getters: {
