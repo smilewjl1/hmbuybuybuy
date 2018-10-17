@@ -110,7 +110,7 @@
                     <div class="cart-foot clearfix">
                         <div class="right-box">
                             <button class="button" @click="$router.push({ path: 'index' })">继续购物</button>
-                            <button class="submit" @click="$router.push({ path:'orderlist'})">立即结算</button>
+                            <button class="submit" @click="$router.push({ path:`/orderlist/${checkIds}`})">立即结算</button>
                         </div>
                     </div>
                     <!--购物车底部-->
@@ -215,6 +215,18 @@ export default {
         }
       });
       return totalPrice;
+    },
+    //选中的商品id
+    checkIds(){
+        let ids = '';
+        this.goodslist.forEach(v => {
+            if(v.selected){
+                ids += v.id;
+                ids += ',';
+            }
+        })
+        ids = ids.slice(0,-1);
+        return ids;
     }
   }
 };

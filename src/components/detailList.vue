@@ -21,13 +21,13 @@
                                     <div class="el-col el-col-12">
                                         <dl class="form-group">
                                             <dt>订 单 号：</dt>
-                                            <dd>BD2018012523954579</dd>
+                                            <dd>{{orderInfo.order_no}}</dd>
                                         </dl>
                                     </div>
                                     <div class="el-col el-col-12">
                                         <dl class="form-group">
                                             <dt>收货人姓名：</dt>
-                                            <dd>张三</dd>
+                                            <dd>{{orderInfo.accept_name}}</dd>
                                         </dl>
                                     </div>
                                 </div>
@@ -35,14 +35,14 @@
                                     <div class="el-col el-col-12">
                                         <dl class="form-group">
                                             <dt>送货地址：</dt>
-                                            <dd>河北省,石家庄市,新华区
+                                            <dd>{{orderInfo.area}}{{orderInfo.address}}
                                             </dd>
                                         </dl>
                                     </div>
                                     <div class="el-col el-col-12">
                                         <dl class="form-group">
                                             <dt>手机号码：</dt>
-                                            <dd>13811111111</dd>
+                                            <dd>{{orderInfo.mobile}}</dd>
                                         </dl>
                                     </div>
                                 </div>
@@ -50,7 +50,7 @@
                                     <div class="el-col el-col-12">
                                         <dl class="form-group">
                                             <dt>支付金额：</dt>
-                                            <dd>10408 元</dd>
+                                            <dd>{{orderInfo.order_amount}} 元</dd>
                                         </dl>
                                     </div>
                                     <div class="el-col el-col-12">
@@ -64,14 +64,14 @@
                                     <div class="el-col el-col-12">
                                         <dl class="form-group">
                                             <dt>备&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注：</dt>
-                                            <dd>请尽快发货</dd>
+                                            <dd>{{orderInfo.message}}</dd>
                                         </dl>
                                     </div>
                                 </div>
                             </div>
                             <div class="el-col el-col-6">
                                 <div id="container2">
-                                    <canvas width="300" height="300"></canvas>
+                                    <qriously value="https://www.baidu.com/" :size="200" />
                                 </div>
                             </div>
                         </div>
@@ -84,7 +84,22 @@
 
 <script>
 export default {
-  name: "detailList"
+  name: "detailList",
+  data: function() {
+    return {
+      orderId: 0,
+      // 订单数据
+      orderInfo: {}
+    };
+  },
+  created() {
+    this.orderId = this.$route.params.orderId;
+    this.$axios
+      .get("site/validate/order/getorder/" + this.orderId)
+      .then(response => {
+        this.orderInfo = response.data.message[0];
+      });
+  }
 };
 </script>
 

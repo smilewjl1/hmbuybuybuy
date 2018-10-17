@@ -40,6 +40,10 @@ Vue.use(ProductZoomer)
 //引入moment
 import moment from "moment"
 
+//引入二维码插件
+import VueQriously from 'vue-qriously'
+Vue.use(VueQriously)
+
 Vue.config.productionTip = false
 
 //抽取全局过滤器
@@ -54,7 +58,8 @@ Vue.filter('beautyTimePro', function (value, timeStr) {
 //路由守卫来判断是否登录
 router.beforeEach((to, from, next) => {
   window.document.title = to.meta.zhName;
-  if (to.path == '/orderlist') {
+  // if (to.path == '/orderlist') {
+    if(to.meta.checkLogin == true){
     axios.get('site/account/islogin').then(response => {
       //console.log(response);
       if (response.data.code === 'nologin') {

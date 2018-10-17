@@ -62,11 +62,13 @@ export default new VueRouter({
             }
         },
         {
-            path: '/orderlist',
+            path: '/orderlist/:ids',
             name: 'orderlist',
             component: orderlist,
             meta: {
-                zhName: '生成订单'
+                zhName: '生成订单',
+                // 增加的标示字段 有这个字段 就需要 登录判断
+                checkLogin: true
             }
         },
         {
@@ -78,16 +80,13 @@ export default new VueRouter({
             }
         },
         {
-            path: '/detailList',
+            path: '/detailList/:orderId',
             name: 'detailList',
             component: detailList,
             meta: {
-                zhName: '支付中心'
+                zhName: '支付中心',
+                checkLogin: true
             }
-        },
-        {
-            path: '*', //其他页面，强制跳转到登录页面
-            redirect: '/index'
         }
     ],
     scrollBehavior(to, from, savedPosition) {
