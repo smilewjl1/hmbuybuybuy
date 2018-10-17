@@ -17,7 +17,8 @@ const login = () =>
     import('@/components/login.vue');
 const detailList = () =>
     import('@/components/detailList.vue');
-
+const successPay = () =>
+    import('@/components/successPay.vue');
 //引入index组件
 //import index from '@/components/index.vue';
 //引入detail组件
@@ -85,6 +86,14 @@ export default new VueRouter({
             component: detailList,
             meta: {
                 zhName: '支付中心',
+                checkLogin: true
+            }
+        },
+        {
+            path: '/successPay',
+            name: 'successPay',
+            component: successPay,
+            meta: {
                 checkLogin: true
             }
         }
