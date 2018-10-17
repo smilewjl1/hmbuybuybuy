@@ -84,7 +84,9 @@
                 </div>
             </div>
         </div>
+        <keep-alive>
         <router-view></router-view>
+        </keep-alive>
         <div class="footer">
             <div class="section">
                 <div class="foot-nav">

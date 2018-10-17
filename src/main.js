@@ -69,6 +69,10 @@ router.beforeEach((to, from, next) => {
     next();
   }
 })
+//全局后置导航守卫
+//router.afterEach((to,from) => {
+//  window.scroll(0,0);
+//})
 
 new Vue({
   render: h => h(App),

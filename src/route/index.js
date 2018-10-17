@@ -84,6 +84,10 @@ export default new VueRouter({
             meta: {
                 zhName: '支付中心'
             }
+        },
+        {
+            path: '*', //其他页面，强制跳转到登录页面
+            redirect: '/index'
         }
     ],
     scrollBehavior(to, from, savedPosition) {
