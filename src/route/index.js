@@ -4,19 +4,27 @@ import VueRouter from 'vue-router'
 //use一下
 Vue.use(VueRouter)
 
-//路由懒加载
+//路由懒加载 引入首页组件
 const index = () => import('@/components/index.vue');
+//引入商品详情页组件
 const detail = () => import('@/components/detail.vue');
+//引入购物车组件
 const cart = () => import('@/components/cart.vue');
+//引入确认订单组件
 const orderlist = () => import('@/components/orderlist.vue');
+//引入登录组件
 const login = () => import('@/components/login.vue');
+//引入支付页组件
 const detailList = () => import('@/components/detailList.vue');
+//引入支付成功组件
 const successPay = () => import('@/components/successPay.vue');
 //引入会员中心组件
 const infoCenter = () => import('@/components/infoCenter.vue');
 //引入会员中心子组件
 const info = () => import('@/components/infoPage/info.vue');
+//订单列表组件
 const orderList = () => import('@/components/infoPage/orderList.vue');
+//订单详情组件
 const orderInfo = () => import('@/components/infoPage/orderInfo.vue');
 
 export default new VueRouter({
@@ -24,7 +32,9 @@ export default new VueRouter({
             path: '/',
             component: index,
             meta: {
-                zhName: '首页'
+                zhName: '首页',
+                //设置页面是否要缓存
+                keepAlive: true
             }
         },
         {
@@ -32,7 +42,8 @@ export default new VueRouter({
             name: 'index',
             component: index,
             meta: {
-                zhName: '首页'
+                zhName: '首页',
+                keepAlive: true
             }
         },
         {
@@ -40,7 +51,8 @@ export default new VueRouter({
             name: 'detail',
             component: detail,
             meta: {
-                zhName: '详情页'
+                zhName: '详情页',
+                keepAlive: true
             }
         },
         {
@@ -48,7 +60,8 @@ export default new VueRouter({
             name: 'cart',
             component: cart,
             meta: {
-                zhName: '购物车'
+                zhName: '购物车',
+                keepAlive: false
             }
         },
         {
@@ -57,6 +70,7 @@ export default new VueRouter({
             component: orderlist,
             meta: {
                 zhName: '生成订单',
+                keepAlive: false,
                 // 增加的标示字段 有这个字段 就需要 登录判断
                 checkLogin: true
             }
@@ -66,7 +80,8 @@ export default new VueRouter({
             name: 'login',
             component: login,
             meta: {
-                zhName: '登录'
+                zhName: '登录',
+                keepAlive: false
             }
         },
         {
@@ -75,6 +90,7 @@ export default new VueRouter({
             component: detailList,
             meta: {
                 zhName: '支付中心',
+                keepAlive: false,
                 checkLogin: true
             }
         },
@@ -84,15 +100,16 @@ export default new VueRouter({
             component: successPay,
             meta: {
                 checkLogin: true,
+                keepAlive: false,
                 zhName:'支付成功'
             }
         },
         {
             path: '/infoCenter',
-            name: 'infoCenter',
             component: infoCenter,
             meta: {
                 checkLogin: true,
+                keepAlive: true,
                 zhName:'会员中心'
             },
             children:[
@@ -106,6 +123,7 @@ export default new VueRouter({
                     component:info,
                     meta: {
                         checkLogin: true,
+                        keepAlive: false,
                         zhName:'会员中心'
                     }
                 },
@@ -115,6 +133,7 @@ export default new VueRouter({
                     component:orderInfo,
                     meta: {
                         checkLogin: true,
+                        keepAlive: false,
                         zhName:'订单详情'
                     }
                 },
@@ -124,6 +143,7 @@ export default new VueRouter({
                     component:orderList,
                     meta: {
                         checkLogin: true,
+                        keepAlive: false,
                         zhName:'订单列表'
                     }
                 },

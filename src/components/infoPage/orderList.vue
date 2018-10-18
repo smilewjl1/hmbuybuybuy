@@ -31,13 +31,13 @@
                         </td>
                         <td align="left">
                             <!-- <a href="#/site/member/orderinfo/12" class=""> -->
-                            <router-link :to="'/userInfo/orderInfo/'+item.id">
+                            <router-link :to="'/infoCenter/orderInfo/'+item.id">
                                 查看订单
                             </router-link>
                             <!-- </a> -->
                             <br>
                             <!-- <a href="#/site/goods/payment/12" class=""> -->
-                            <router-link v-show="item.status==1" :to="'/payOrder/'+item.id">
+                            <router-link v-show="item.status==1" :to="'/detailList/'+item.id">
                                 |去付款
                             </router-link>
                             <!-- </a> -->
