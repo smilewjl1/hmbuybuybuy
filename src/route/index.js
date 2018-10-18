@@ -5,30 +5,19 @@ import VueRouter from 'vue-router'
 Vue.use(VueRouter)
 
 //路由懒加载
-const index = () =>
-    import('@/components/index.vue');
-const detail = () =>
-    import('@/components/detail.vue');
-const cart = () =>
-    import('@/components/cart.vue');
-const orderlist = () =>
-    import('@/components/orderlist.vue');
-const login = () =>
-    import('@/components/login.vue');
-const detailList = () =>
-    import('@/components/detailList.vue');
-const successPay = () =>
-    import('@/components/successPay.vue');
-//引入index组件
-//import index from '@/components/index.vue';
-//引入detail组件
-//import detail from '@/components/detail.vue';
-//引入购物车组件
-//import cart from '@/components/cart.vue';
-//引入下订单组件
-//import orderlist from '@/components/orderlist.vue';
-//引入注册组件
-//import login from '@/components/login.vue';
+const index = () => import('@/components/index.vue');
+const detail = () => import('@/components/detail.vue');
+const cart = () => import('@/components/cart.vue');
+const orderlist = () => import('@/components/orderlist.vue');
+const login = () => import('@/components/login.vue');
+const detailList = () => import('@/components/detailList.vue');
+const successPay = () => import('@/components/successPay.vue');
+//引入会员中心组件
+const infoCenter = () => import('@/components/infoCenter.vue');
+//引入会员中心子组件
+const info = () => import('@/components/infoPage/info.vue');
+const orderList = () => import('@/components/infoPage/orderList.vue');
+const orderInfo = () => import('@/components/infoPage/orderInfo.vue');
 
 export default new VueRouter({
     routes: [{
@@ -94,8 +83,51 @@ export default new VueRouter({
             name: 'successPay',
             component: successPay,
             meta: {
-                checkLogin: true
+                checkLogin: true,
+                zhName:'支付成功'
             }
+        },
+        {
+            path: '/infoCenter',
+            name: 'infoCenter',
+            component: infoCenter,
+            meta: {
+                checkLogin: true,
+                zhName:'会员中心'
+            },
+            children:[
+                {
+                    path:'',
+                    redirect:'info'
+                },
+                {
+                    path:'info',
+                    name:'info',
+                    component:info,
+                    meta: {
+                        checkLogin: true,
+                        zhName:'会员中心'
+                    }
+                },
+                {
+                    path:'orderInfo/:orderId',
+                    name:'orderInfo',
+                    component:orderInfo,
+                    meta: {
+                        checkLogin: true,
+                        zhName:'订单详情'
+                    }
+                },
+                {
+                    path:'orderList',
+                    name:'orderList',
+                    component:orderList,
+                    meta: {
+                        checkLogin: true,
+                        zhName:'订单列表'
+                    }
+                },
+            ]
         }
     ],
     scrollBehavior(to, from, savedPosition) {

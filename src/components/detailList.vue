@@ -71,7 +71,7 @@
                             </div>
                             <div class="el-col el-col-6">
                                 <div id="container2">
-                                    <qriously value="https://www.baidu.com/" :size="200" />
+                                    <qriously :value="'http://111.230.232.110:8899/site/validate/pay/alipay/'+orderId" :size="200" />
                                 </div>
                             </div>
                         </div>
@@ -89,17 +89,44 @@ export default {
     return {
       orderId: 0,
       // 订单数据
-      orderInfo: {}
+      orderInfo: {},
+      //定时器id
+      interId: 0
     };
+  },
+  methods: {
+    getOrderInfo() {
+      this.$axios
+        .get("site/validate/order/getorder/" + this.orderId)
+        .then(response => {
+          this.orderInfo = response.data.message[0];
+        });
+    }
   },
   created() {
     this.orderId = this.$route.params.orderId;
-    this.$axios
-      .get("site/validate/order/getorder/" + this.orderId)
-      .then(response => {
-        this.orderInfo = response.data.message[0];
-      });
-  }
+    this.getOrderInfo();
+     this.interId = setInterval(() => {
+      // 调用接口
+      this.$axios
+        .get("site/validate/order/getorder/" + this.orderId)
+        .then(response => {
+          //   console.log(response);
+          // 获取订单信息
+          this.orderInfo = response.data.message[0];
+          // 判断订单的状态
+          if (this.orderInfo.status == 2) {
+            // 订单支付成功
+            this.$message.success("支付成功");
+            // 跳转页面
+            this.$router.push('/successPay');
+          }
+        });
+    }, 1500);
+  },
+  destroyed() {
+      clearInterval(this.interId);
+  },
 };
 </script>
 

@@ -127,6 +127,9 @@ export default {
 };
 </script>
 <style>
+.sub-tit{
+    padding: 0;
+}
 </style>
 
 

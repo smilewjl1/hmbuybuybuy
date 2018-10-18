@@ -18,37 +18,87 @@
                         <th width="10%">状态</th>
                         <th width="12%">操作</th>
                     </tr>
-                    <tr>
-                        <td>BD20171025213815752</td>
-                        <td align="left">ivanyb1212</td>
+                    <tr v-for="item in orderList" :key="item.id">
+                        <td>{{item.order_no}}</td>
+                        <td align="left">{{item.accept_name}}</td>
                         <td align="left">
-                            <strong style="color: red;">￥7220</strong>
+                            <strong style="color: red;">￥{{item.order_amount}}</strong>
                             <br> 在线支付
                         </td>
-                        <td align="left">2017-10-25 21:38:15</td>
+                        <td align="left">{{item.add_time |beautyTimePro('YYYY年MM月DD日 HH时mm分ss秒') }}</td>
                         <td align="left">
-                            待付款
+                            {{item.statusName}}
                         </td>
                         <td align="left">
-                            <a href="#/site/member/orderinfo/12" class="">查看订单</a>
+                            <!-- <a href="#/site/member/orderinfo/12" class=""> -->
+                            <router-link :to="'/userInfo/orderInfo/'+item.id">
+                                查看订单
+                            </router-link>
+                            <!-- </a> -->
                             <br>
-                            <a href="#/site/goods/payment/12" class="">|去付款</a>
-                            <br>
-                            <a href="javascript:void(0)">|取消</a>
-                            <br>
+                            <!-- <a href="#/site/goods/payment/12" class=""> -->
+                            <router-link v-show="item.status==1" :to="'/payOrder/'+item.id">
+                                |去付款
+                            </router-link>
+                            <!-- </a> -->
+                            <!-- <br> -->
+                            <!-- <a href="javascript:void(0)">|取消</a> -->
+                            <!-- <br> -->
                         </td>
                     </tr>
                 </tbody>
             </table>
             <div class="page-foot">
-
+                <!-- element-ui的分页组件 -->
+                <el-pagination @size-change="sizeChange" @current-change="currentChange" :current-page="pageIndex" :page-sizes="[2, 4, 6, 8,10]" :page-size="pageSize" layout="total, sizes, prev, pager, next, jumper" :total="total">
+                </el-pagination>
             </div>
         </div>
     </div>
 </template>
 <script>
 export default {
-  name: "orderList"
+  name: "orderList",
+  data() {
+    return {
+      // 页码
+      pageIndex: 1,
+      //   页容量
+      pageSize: 10,
+      // 当前页的数据
+      orderList: [],
+      // 总条数
+      total: 0
+    };
+  },
+  methods: {
+    // 获取订单数据
+    getOrderData() {
+      this.$axios
+        .get(
+          `site/validate/order/userorderlist?pageIndex=${
+            this.pageIndex
+          }&pageSize=${this.pageSize}`
+        )
+        .then(response => {
+          // 赋值
+          this.orderList = response.data.message;
+          // 总条数
+          this.total = response.data.totalcount;
+        });
+    },
+    sizeChange(newSize) {
+      this.pageSize = newSize;
+      this.getOrderData();
+    },
+    currentChange(newCurrent) {
+      this.pageIndex = newCurrent;
+      this.getOrderData();
+    },
+  },
+  created() {
+    this.getOrderData();
+  }
 };
 </script>
 <style>

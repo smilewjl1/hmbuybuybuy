@@ -17,7 +17,7 @@
                             <strong>|</strong>
                         </span>
                         <span v-show="$store.state.isLogin==true">
-                            <a href="" class="">会员中心</a>
+                            <a @click="$router.push('/infoCenter')">会员中心</a>
                             <strong>|</strong>
                             <a @click="logOut">退出</a>
                             <strong>|</strong>
@@ -83,10 +83,8 @@
                     </div>
                 </div>
             </div>
-        </div>
-        <keep-alive>
+        </div>      
         <router-view></router-view>
-        </keep-alive>
         <div class="footer">
             <div class="section">
                 <div class="foot-nav">

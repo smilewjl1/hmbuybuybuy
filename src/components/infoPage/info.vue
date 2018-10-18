@@ -9,12 +9,12 @@
         </div>
         <div class="center-head clearfix">
             <div class="img-box">
-                <i class="iconfont icon-user-full"></i>
+                <img src="../../assets/img/01.png" alt="">
             </div>
             <div class="list-box">
-                <h3>欢迎您~ ivanyb</h3>
+                <h3>欢迎您~ 呵呵哒</h3>
                 <ul>
-                    <li>组别：注册会员</li>
+                    <li>组别：银牌会员</li>
                     <li>手机：13987654321</li>
                     <li>Email:ivanyb1@qq.com</li>
                 </ul>

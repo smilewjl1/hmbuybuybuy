@@ -22,9 +22,14 @@
                                             <i class="iconfont icon-check"></i>
                                         </div>
                                         <div class="info">
-                                            <strong>订单已支付成功！</strong>
+                                            <strong>订单已支付成功！<span>还有<i>{{num}}秒</i>跳转到首页</span></strong>
                                             <p>您可以点击这里进入
-                                                <a href="/user/center/index.html">会员中心</a>查看订单状态！</p>
+                                                <router-link to="/infoCenter">
+                                                <!-- <a href="/user/center/index.html"> -->
+                                                会员中心
+                                                <!-- </a> -->
+                                                </router-link>
+                                                查看订单状态！</p>
                                             <p>如有其它问题，请立即与我们客服人员联系。</p>
                                         </div>
                                     </div>
@@ -39,10 +44,33 @@
 </template>
 <script>
 export default {
-  name: "successPay"
+  name: "successPay",
+  data(){
+      return{
+          num:5,
+          interId:0
+      }
+  },
+  created() {
+    this.interId = setInterval(()=>{
+        this.num--;
+        if(this.num==0){
+            this.$message.success('支付成功,亲,可以继续购物!!!');
+            this.$router.push('/index');
+        }
+      },1000)
+  },
+  destroyed() {
+      clearInterval(this.interId);
+  },
 };
 </script>
 <style>
+.info span i{
+    color: red;
+    font-size: 14px;
+    font-weight: 700;
+}
 </style>
 
 

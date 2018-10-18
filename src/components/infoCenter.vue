@@ -14,16 +14,12 @@
                         <div class="left-260">
                             <div class="bg-wrap">
                                 <div class="avatar-box">
-                                    <a href="/user/center/avatar.html" class="img-box">
-                                        <i class="iconfont icon-user-full"></i>
+                                    <a @click="$router.push('/infoCenter')" class="img-box">
+                                        <img src="../assets/img/01.png" alt="">
                                     </a>
-                                    <h3>
-
-                                        ivanyb
-
-                                    </h3>
+                                    <h3>呵呵哒</h3>
                                     <p>
-                                        <b>注册会员</b>
+                                        <b>银牌会员</b>
                                     </p>
                                 </div>
                                 <div class="center-nav">
@@ -35,7 +31,7 @@
                                             </h2>
                                             <div class="list">
                                                 <p>
-                                                    <a href="#/site/member/orderlist" class="">
+                                                    <a @click="$router.push('/infoCenter/orderList')" class="">
                                                         <i class="iconfont icon-arrow-right"></i>交易订单</a>
                                                 </p>
                                             </div>
@@ -69,7 +65,7 @@
                             </div>
                         </div>
                         <div class="right-auto">
-                           
+                           <router-view></router-view>
                         </div>
                     </div>
                 </div>
@@ -83,6 +79,13 @@ export default {
 };
 </script>
 <style>
+.sub-tit {
+  padding-top: 0;
+}
+/* 头像盒子的高度不能固定 */
+.avatar-box {
+  height: auto;
+}
 </style>
 
 
