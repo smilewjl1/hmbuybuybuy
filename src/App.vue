@@ -83,8 +83,11 @@
                     </div>
                 </div>
             </div>
-        </div>      
-        <router-view></router-view>
+        </div>
+        <keep-alive>
+            <router-view v-if="$route.meta.keepAlive"></router-view>
+        </keep-alive>
+        <router-view v-if="!$route.meta.keepAlive"></router-view>
         <div class="footer">
             <div class="section">
                 <div class="foot-nav">
@@ -127,7 +130,7 @@
 import $ from "jquery";
 
 export default {
-  name: "app",
+  name: "App",
   mounted() {
     $("#menu2 li a").wrapInner('<span class="out"></span>');
     $("#menu2 li a").each(function() {
@@ -154,29 +157,31 @@ export default {
     );
   },
   methods: {
-      logOut(){
-        this.$confirm('确定要退出?', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
-            this.$axios.get('site/account/logout').then(response => {
-                if(response.data.status == 0){
-                    this.$message({
-                        type: 'success',
-                        message: response.data.message
-                    });
-                    this.$router.push('/index');
-                    this.$store.commit('updateLoginState',false);
-                }
-            })
-        }).catch(() => {
-          this.$message({
-            type: 'info',
-            message: '已取消退出'
-          });         
+    logOut() {
+      this.$confirm("确定要退出?", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      })
+        .then(() => {
+          this.$axios.get("site/account/logout").then(response => {
+            if (response.data.status == 0) {
+              this.$message({
+                type: "success",
+                message: response.data.message
+              });
+              this.$router.push("/index");
+              this.$store.commit("updateLoginState", false);
+            }
+          });
         })
-      }
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "已取消退出"
+          });
+        });
+    }
   }
 };
 </script>

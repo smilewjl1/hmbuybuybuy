@@ -153,7 +153,7 @@
 <script>
 import $ from 'jquery';
 export default {
-  name: "Detail",
+  name: 'detail',
   data: function() {
     return {
       goodId: "",
@@ -216,7 +216,7 @@ export default {
           this.imglist = response.data.message.imglist;
           //处理数据img
           let tem_normal_size = [];
-          this.imglist.forEach(v => {
+          this.imglist.forEach( v => {
             tem_normal_size.push({
               id: v.id,
               url: v.thumb_path

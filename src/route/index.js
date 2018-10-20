@@ -5,37 +5,32 @@ import VueRouter from 'vue-router'
 Vue.use(VueRouter)
 
 //路由懒加载 引入首页组件
-const index = () => import('@/components/index.vue');
+const index = r => require.ensure([], () => r(require('@/components/index.vue')),'index');
 //引入商品详情页组件
-const detail = () => import('@/components/detail.vue');
+const detail = r => require.ensure([], () => r(require('@/components/detail.vue')),'detail');
 //引入购物车组件
-const cart = () => import('@/components/cart.vue');
+const cart = r => require.ensure([], () => r(require('@/components/cart.vue')),'cart');
 //引入确认订单组件
-const orderlist = () => import('@/components/orderlist.vue');
+const orderlist = r => require.ensure([], () => r(require('@/components/orderlist.vue')),'orderlist');
 //引入登录组件
-const login = () => import('@/components/login.vue');
+const login = r => require.ensure([], () => r(require('@/components/login.vue')),'login');
 //引入支付页组件
-const detailList = () => import('@/components/detailList.vue');
+const detailList = r => require.ensure([], () => r(require('@/components/detailList.vue')),'detailList');
 //引入支付成功组件
-const successPay = () => import('@/components/successPay.vue');
+const successPay = r => require.ensure([], () => r(require('@/components/successPay.vue')),'successPay');
 //引入会员中心组件
-const infoCenter = () => import('@/components/infoCenter.vue');
+const infoCenter = r => require.ensure([], () => r(require('@/components/infoCenter.vue')),'infoCenter');
 //引入会员中心子组件
-const info = () => import('@/components/infoPage/info.vue');
+const info = r => require.ensure([], () => r(require('@/components/infoPage/info.vue')),'info');
 //订单列表组件
-const orderList = () => import('@/components/infoPage/orderList.vue');
+const orderList = r => require.ensure([], () => r(require('@/components/infoPage/orderList.vue')),'orderList');
 //订单详情组件
-const orderInfo = () => import('@/components/infoPage/orderInfo.vue');
+const orderInfo = r => require.ensure([], () => r(require('@/components/infoPage/orderInfo.vue')),'orderInfo');
 
 export default new VueRouter({
     routes: [{
             path: '/',
-            component: index,
-            meta: {
-                zhName: '首页',
-                //设置页面是否要缓存
-                keepAlive: true
-            }
+            redirect:'/index'
         },
         {
             path: '/index',
